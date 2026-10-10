@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>とんずら回収ナビ</title>
-<meta name="description" content="PayPayなどで送金して相手に逃げられたときの回収手順・証拠整理・文面作成ツール">
+<title>とんずら回収ナビ｜PayPayで送金して逃げられた・詐欺にあったときにやること</title>
+<meta name="description" content="PayPayで送金したあと相手と連絡が取れない、詐欺にあったかもしれない人のための無料ツール。取り消せるかの確認、証拠の整理、警察・PayPayへの相談文、内容証明・少額訴訟の下書きまで、やることを順番に案内します。">
+<link rel="canonical" href="https://toybox-anime.github.io/tonzura-navi/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="とんずら回収ナビ｜PayPayで送金して逃げられた・詐欺にあったら">
+<meta property="og:description" content="取り消せるかの確認、証拠の整理、警察・PayPayへの相談文、内容証明の下書きまで。無料・登録なし。">
+<meta property="og:url" content="https://toybox-anime.github.io/tonzura-navi/">
+<meta property="og:image" content="https://toybox-anime.github.io/tonzura-navi/og.png">
+<meta property="og:site_name" content="とんずら回収ナビ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e5322d">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +22,21 @@
   <h1 id="pageTitle">とんずら回収ナビ</h1>
   <button id="fontBtn" class="font-btn" aria-label="文字の大きさを切り替える">文字 大</button>
 </header>
-<main id="app"></main>
+<main id="app">
+  <noscript>
+    <p>このツールを使うにはJavaScriptを有効にしてください。下の解説ページはそのまま読めます。</p>
+  </noscript>
+</main>
+<nav class="guides-static" aria-label="手口別の解説">
+  <h2>手口別の解説</h2>
+  <ul>
+    <li><a href="guide/torikeshi.html">PayPayの送金は取り消せる？「受け取り待ち」なら間に合います</a></li>
+    <li><a href="guide/henkin-sagi.html">「PayPayで返金します」は詐欺の合図。逆にお金を送らされる手口</a></li>
+    <li><a href="guide/ticket-sagi.html">チケット・フリマの先払いで相手が消えた。PayPay送金後にやること</a></li>
+    <li><a href="guide/toushi-romance.html">投資・副業・ロマンス詐欺でPayPay送金してしまったら</a></li>
+    <li><a href="guide/kashikin.html">友だちに貸したお金が返ってこない。PayPayで貸したときの取り戻し方</a></li>
+  </ul>
+</nav>
 <div id="toast" class="toast" hidden></div>
 <script src="app.js"></script>
 </body>

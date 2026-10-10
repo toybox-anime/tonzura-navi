@@ -87,6 +87,44 @@ function download(name, text, type = 'text/plain') {
 }
 const v = (c, k, ph) => (c[k] && String(c[k]).trim()) || `【${ph}】`;
 
+// ---------- 共有（予防のために広める） ----------
+const SITE_URL = 'https://toybox-anime.github.io/tonzura-navi/';
+const SHARE_TEXT = `PayPayの詐欺、知っておくと防げること
+・「PayPayで返金します」と言われて操作すると、逆にお金を送らされる手口がある
+・相手が「受け取り待ち」のうちなら、送金は取り消せる
+・「被害金を取り戻します」と連絡してくる業者は、二次被害の詐欺
+もしもの時にやることのまとめ↓`;
+const GUIDES = [
+  ['guide/torikeshi.html', 'PayPayの送金は取り消せる？「受け取り待ち」なら間に合う'],
+  ['guide/henkin-sagi.html', '「PayPayで返金します」は詐欺の合図'],
+  ['guide/ticket-sagi.html', 'チケット・フリマの先払いで相手が消えた'],
+  ['guide/toushi-romance.html', '投資・副業・ロマンス詐欺でPayPay送金した'],
+  ['guide/kashikin.html', '友だちに貸したお金が返ってこない'],
+];
+function shareLine() {
+  window.open('https://line.me/R/share?text=' + encodeURIComponent(`${SHARE_TEXT}\n${SITE_URL}`), '_blank', 'noopener');
+}
+async function shareText() {
+  if (navigator.share) {
+    try { await navigator.share({ title: 'とんずら回収ナビ', text: SHARE_TEXT, url: SITE_URL }); } catch (e) { /* キャンセル */ }
+    return;
+  }
+  copyText(`${SHARE_TEXT}\n${SITE_URL}`);
+}
+async function shareCard() {
+  try {
+    const blob = await (await fetch('card.png')).blob();
+    const file = new File([blob], 'paypay-sagi-chuui.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text: `もしもの時にやることのまとめ\n${SITE_URL}` });
+      return;
+    }
+  } catch (e) { if (e.name === 'AbortError') return; }
+  const a = document.createElement('a');
+  a.href = 'card.png'; a.download = 'paypay-sagi-chuui.png'; a.click();
+  toast('画像を保存しました');
+}
+
 // ---------- 被害の種類 ----------
 const TYPES = {
   lend: { label: '貸したお金を返してくれない', desc: '友人・知人・SNSで知り合った人などに貸した', short: '貸金' },
@@ -388,6 +426,57 @@ ${timelineText(c).split('\n').map(s => '　' + s).join('\n')}
 甲2号証　原告と被告のやりとり（スクリーンショット）
 ${c.naiyouDone ? '甲3号証　内容証明郵便及び配達証明書' : ''}`,
   },
+  shoko: {
+    title: '証拠説明書（証拠の一覧表）',
+    note: '裁判所に証拠を出すときに、証拠と一緒に出す一覧表です。「証拠」タブで画像ごとに種類を選んでおくと、内容が自動で入ります。印刷したスクショの右上に「甲第1号証」などと書き込んでください。',
+    gen: (c, imgs = []) => {
+      const items = imgs.length
+        ? imgs.map(i => ({ kind: i.kind || 'other', date: ymd(new Date(i.date)), memo: i.memo }))
+        : [{ kind: 'pay', date: firstSent(c) }, { kind: 'talk', date: '' }];
+      if (c.naiyouDone) items.push({ kind: 'naiyou', date: c.done && c.done.naiyou });
+      return `証拠説明書
+
+${jdate(today())}
+
+原告　【あなたの名前】
+被告　${v(c, 'name', '相手の名前')}
+
+${items.map((it, n) => {
+  const k = EVIDENCE_KINDS[it.kind] || EVIDENCE_KINDS.other;
+  return `■ 甲第${n + 1}号証
+　標目：${k.label}${it.memo ? `（${it.memo}）` : ''}
+　原本・写しの別：${k.copy}
+　作成日：${it.date ? jdate(it.date) : '【日付】'}
+　作成者：${k.author}
+　立証趣旨：${k.purpose(c)}`;
+}).join('\n\n')}`;
+    },
+  },
+};
+
+const EVIDENCE_KINDS = {
+  pay: {
+    label: 'PayPay取引履歴の画面（スクリーンショット）', short: 'PayPay取引履歴', copy: '写し', author: '原告（撮影）',
+    purpose: (c) => `原告が被告に対し、PayPayで${yen(totalAmount(c))}を送金した事実`,
+  },
+  talk: {
+    label: '原告と被告のやりとりの画面（スクリーンショット）', short: 'やりとり（トーク・DM）', copy: '写し', author: '原告（撮影）',
+    purpose: (c) => c.type === 'lend' ? '被告が金銭を借り受け、返済を約束した事実、及びその後の経緯'
+      : c.type === 'trade' ? '原告と被告の売買の合意内容、及び商品が届かない経緯'
+        : '被告の説明の内容、及び原告が送金するに至った経緯',
+  },
+  profile: {
+    label: '被告のプロフィール画面（スクリーンショット）', short: '相手のプロフィール', copy: '写し', author: '原告（撮影）',
+    purpose: () => '被告を特定する情報（表示名・ID等）',
+  },
+  naiyou: {
+    label: '内容証明郵便及び配達証明書', short: '内容証明', copy: '写し', author: '原告',
+    purpose: () => '原告が被告に支払いを請求し、その請求が被告に届いた事実',
+  },
+  other: {
+    label: 'スクリーンショット', short: 'その他', copy: '写し', author: '原告（撮影）',
+    purpose: () => '【この証拠で示したいこと】',
+  },
 };
 
 // ---------- 予防：借用書 ----------
@@ -433,6 +522,8 @@ backBtn.onclick = () => {
 const getCase = (id) => state.cases.find(c => c.id === id);
 
 function render() {
+  // 静的リンクはJSなし・検索エンジン向け。アプリ内ではホームのカードに同じリンクがある
+  document.querySelector('.guides-static')?.classList.add('hidden');
   backBtn.hidden = route.name === 'home';
   const title = document.getElementById('pageTitle');
   if (route.name === 'home') { title.textContent = 'とんずら回収ナビ'; renderHome(); }
@@ -555,6 +646,19 @@ function renderHome() {
       </div>`;
     }).join('')}
 
+    <h2>知っておくと防げること</h2>
+    <div class="card prevent">
+      <p class="sub">よくある手口を、図とことばでまとめました。被害にあう前に、家族や友だちにも教えてあげてください。</p>
+      <ul style="padding-left:18px;margin:6px 0">
+        ${GUIDES.map(([href, t]) => `<li><a href="${href}">${t}</a></li>`).join('')}
+      </ul>
+      <div class="share-row">
+        <button class="btn line" id="lineShare">LINEで送る</button>
+        <button class="btn sub-btn" id="cardShare">注意カード画像</button>
+        <button class="btn sub-btn" id="textShare">ほかの方法で共有</button>
+      </div>
+    </div>
+
     <h2>ほかの機能</h2>
     <div class="card click" id="loanBtn"><h3>貸す前に：借用書をつくる</h3><p class="sub">送金前に相手の同意と本名・住所をもらっておくと、いざという時に回収しやすくなります。</p></div>
     <div class="card click" id="contactBtn"><h3>相談先の一覧</h3><p class="sub">警察・消費生活センター・法テラスなど</p></div>
@@ -568,6 +672,9 @@ function renderHome() {
     ${heartCard()}
     <footer class="note">このアプリは手続きの案内と文書の下書きを作るツールで、法律相談ではありません。具体的な判断は弁護士・司法書士・警察などに相談してください。内容は2026年10月時点のPayPay公式ヘルプなどをもとにしています。</footer>`;
 
+  $app.querySelector('#lineShare').onclick = shareLine;
+  $app.querySelector('#cardShare').onclick = shareCard;
+  $app.querySelector('#textShare').onclick = shareText;
   $app.querySelector('#sosBtn').onclick = () => go({ name: 'sos' });
   $app.querySelector('#checkBtn').onclick = () => go({ name: 'check' });
   $app.querySelector('#newBtn').onclick = () => { draft = { type: 'lend', sentAt: today() }; go({ name: 'new' }); };
@@ -733,7 +840,10 @@ async function paneEvidence(c, pane) {
     <h2>スクリーンショット（${imgs.length}枚）</h2>
     <p class="sub">取引履歴・トーク・相手のプロフィールなど。画像はこの端末内だけに保存されます。</p>
     <div class="thumbs" id="thumbs"></div>
-    <label class="btn sub-btn block" style="margin-top:8px">＋ 画像を追加<input type="file" id="imgIn" accept="image/*" multiple hidden></label>
+    <div class="row" style="margin-top:8px">
+      <select id="imgKind" style="flex:1" aria-label="追加する画像の種類">${['pay', 'talk', 'profile', 'other'].map(k => `<option value="${k}">${EVIDENCE_KINDS[k].short}</option>`).join('')}</select>
+      <label class="btn sub-btn" style="margin:0">＋ 画像を追加<input type="file" id="imgIn" accept="image/*" multiple hidden></label>
+    </div>
     ${imgs.length ? '<button class="btn sub-btn small" id="imgDl">画像をまとめて保存（提出用）</button>' : ''}
 
     <h2>出来事の記録（時系列）</h2>
@@ -750,7 +860,9 @@ async function paneEvidence(c, pane) {
   imgs.forEach(i => {
     const url = URL.createObjectURL(i.blob);
     const fig = document.createElement('figure');
-    fig.innerHTML = `<img src="${url}" alt="${esc(i.name)}"><button class="del" aria-label="削除">✕</button><figcaption>${esc(i.name)}</figcaption>`;
+    fig.innerHTML = `<img src="${url}" alt="${esc(i.name)}"><button class="del" aria-label="削除">✕</button>
+      <select class="kind" aria-label="画像の種類">${['pay', 'talk', 'profile', 'other'].map(k => `<option value="${k}" ${(i.kind || 'other') === k ? 'selected' : ''}>${EVIDENCE_KINDS[k].short}</option>`).join('')}</select>`;
+    fig.querySelector('.kind').onchange = async (e) => { i.kind = e.target.value; await idb.put(i); toast('種類を変更しました'); };
     fig.querySelector('img').onclick = () => {
       const vw = document.createElement('div');
       vw.className = 'viewer'; vw.innerHTML = `<img src="${url}" alt="">`;
@@ -782,7 +894,7 @@ async function paneEvidence(c, pane) {
     const files = [...e.target.files];
     for (const f of files) {
       const d = f.lastModified ? new Date(f.lastModified).toISOString() : new Date().toISOString();
-      await idb.put({ id: uid(), caseId: c.id, name: f.name, date: d, blob: f });
+      await idb.put({ id: uid(), caseId: c.id, name: f.name, date: d, blob: f, kind: pane.querySelector('#imgKind').value });
     }
     c.images = (c.images || 0) + files.length;
     touch(c); toast(`${files.length}枚保存しました`); render();
@@ -795,31 +907,127 @@ async function paneEvidence(c, pane) {
   }, n * 300));
 }
 
-function paneDocs(c, pane) {
-  const keys = c.type === 'scam' ? ['police', 'paypay', 'family', 'naiyou', 'sosho'] : ['dunSoft', 'dunStrong', 'paypay', 'police', 'naiyou', 'sosho', 'family'];
+// あなた自身の情報で【 】を埋める
+function fillMe(text) {
+  const me = state.me || {};
+  const map = { '【あなたの名前】': me.name, '【あなたの住所】': me.address, '【あなたの電話番号】': me.tel, '【電話番号】': me.tel };
+  return Object.entries(map).reduce((t, [k, val]) => val ? t.split(k).join(val) : t, text);
+}
+
+async function paneDocs(c, pane) {
+  const keys = c.type === 'scam'
+    ? ['police', 'paypay', 'family', 'naiyou', 'sosho', 'shoko']
+    : ['dunSoft', 'dunStrong', 'paypay', 'police', 'naiyou', 'sosho', 'shoko', 'family'];
   const sel = keys.includes(route.doc) ? route.doc : keys[0];
   const d = DOCS[sel];
-  const text = d.gen(c);
+  const imgs = sel === 'shoko' ? (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => a.date.localeCompare(b.date)) : [];
+  const text = fillMe(d.gen(c, imgs));
+  const me = state.me || {};
+  const isNaiyou = sel === 'naiyou';
   pane.innerHTML = `
     <select id="docSel" class="no-print">${keys.map(k => `<option value="${k}" ${k === sel ? 'selected' : ''}>${DOCS[k].title}</option>`).join('')}</select>
     ${d.note ? `<div class="alert yellow no-print">${d.note}</div>` : ''}
+    <details class="card no-print" ${me.name ? '' : 'open'}>
+      <summary><b>あなたの情報</b> <span class="sub">（入れると文書に自動で入ります・この端末だけに保存）</span></summary>
+      <label for="me_name">名前</label><input id="me_name" value="${esc(me.name || '')}">
+      <label for="me_address">住所</label><input id="me_address" value="${esc(me.address || '')}">
+      <label for="me_tel">電話番号</label><input id="me_tel" type="tel" value="${esc(me.tel || '')}">
+      <button class="btn small" id="meSave" style="margin-top:10px">保存して文書に反映</button>
+    </details>
     ${/【/.test(text) ? '<div class="alert red no-print">【 】の部分は書き換えてください。「情報」タブで入力すると自動で埋まります。</div>' : ''}
+    ${isNaiyou ? `<div class="card no-print">
+      <h3>郵便局の窓口で出すとき</h3>
+      <p class="sub">郵便局に保管される写し（謄本）は「1行20字以内・1枚26行以内」などの決まりがあります。ボタンを押すと、この形に自動で整えます（行頭に「、」「。」が来ないようにします）。</p>
+      <button class="btn small" id="fmtBtn">1行20字・26行に整える</button>
+      <div id="fmtInfo"></div>
+    </div>` : ''}
     <textarea id="docText" style="min-height:420px;font-size:14px">${esc(text)}</textarea>
     <div class="row no-print" style="margin-top:8px">
       <button class="btn" id="copyBtn">コピー</button>
-      <button class="btn sub-btn" id="printBtn">印刷</button>
+      <button class="btn sub-btn" id="printBtn">印刷・PDF保存</button>
       <button class="btn sub-btn" id="txtBtn">テキスト保存</button>
-    </div>`;
+    </div>
+    <p class="sub no-print">PDFにするには、印刷画面でプリンターを「PDFに保存」にしてください。</p>`;
   pane.querySelector('#docSel').onchange = (e) => { route.doc = e.target.value; render(); };
-  const getText = () => pane.querySelector('#docText').value;
+  pane.querySelector('#meSave').onclick = () => {
+    state.me = { name: pane.querySelector('#me_name').value.trim(), address: pane.querySelector('#me_address').value.trim(), tel: pane.querySelector('#me_tel').value.trim() };
+    save(); toast('保存しました'); render();
+  };
+  const ta = pane.querySelector('#docText');
+  const getText = () => ta.value;
+  let formatted = false;
+  if (isNaiyou) pane.querySelector('#fmtBtn').onclick = () => {
+    const lines = formatNaiyou(getText());
+    ta.value = lines.join('\n');
+    formatted = true;
+    const pages = Math.max(1, Math.ceil(lines.length / 26));
+    const f = naiyouFee(pages);
+    const latin = /[Ａ-Ｚａ-ｚ]/.test(ta.value.replace(/ＰａｙＰａｙ/g, ''));
+    pane.querySelector('#fmtInfo').innerHTML = `
+      <p><b>${lines.length}行 → 謄本 ${pages}枚</b></p>
+      <p class="sub">料金の目安：内容証明 ${f.naiyou.toLocaleString()}円＋郵便 110円＋一般書留 480円＋配達証明 350円＝<b>${f.total.toLocaleString()}円</b><br>
+      （日本郵便の料金表〔2025年11月時点〕をもとにした目安です。出す前に窓口で確認してください）</p>
+      <ul class="sub" style="padding-left:18px;margin:6px 0">
+        <li>同じものを<b>3通</b>用意（相手に送る1通・郵便局の保管用・自分の控え）。コピーでOK</li>
+        <li>2枚以上になったら、つづり目に<b>契印</b>（はんこ）を押す</li>
+        <li>封筒に書く相手と自分の住所・名前は、本文と同じにする</li>
+        <li>書き間違えたら、作り直すのがいちばん簡単です</li>
+        ${latin ? '<li style="color:var(--accent)">英字は固有名詞にしか使えません。英字が入っていないか確認してください</li>' : ''}
+      </ul>`;
+  };
   pane.querySelector('#copyBtn').onclick = () => copyText(getText());
   pane.querySelector('#txtBtn').onclick = () => download(`${d.title}.txt`, getText());
-  pane.querySelector('#printBtn').onclick = () => {
-    const w = window.open('', '_blank');
-    if (!w) return toast('ポップアップを許可してください');
-    w.document.write(`<!doctype html><meta charset="utf-8"><title>${esc(d.title)}</title><pre style="white-space:pre-wrap;font-family:serif;font-size:12pt;line-height:1.8">${esc(getText())}</pre>`);
-    w.document.close(); w.print();
-  };
+  pane.querySelector('#printBtn').onclick = () => printDoc(d.title, getText(), isNaiyou && formatted);
+}
+
+// 内容証明（横書き 1行20字・1枚26行）に整える
+const NO_LINE_START = '、。，．）」』】〕〉》”’・ー…‥？！ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶ';
+function formatNaiyou(text) {
+  const full = text
+    .replace(/[!-~]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0xFEE0))
+    .replace(/ /g, '　');
+  const out = [];
+  full.split('\n').forEach(para => {
+    let chars = [...para.replace(/　+$/, '')];
+    if (!chars.length) { out.push(''); return; }
+    while (chars.length) {
+      let n = Math.min(20, chars.length);
+      if (chars.length > n && NO_LINE_START.includes(chars[n])) n -= 1; // 句読点を行頭に送らない（行は20字「以内」なので短くてよい）
+      out.push(chars.slice(0, n).join(''));
+      chars = chars.slice(n);
+    }
+  });
+  while (out.length && out[out.length - 1] === '') out.pop();
+  return out;
+}
+function naiyouFee(pages) {
+  const naiyou = 480 + 290 * (pages - 1);
+  return { naiyou, total: naiyou + 110 + 480 + 350 };
+}
+
+function printDoc(title, text, grid) {
+  const w = window.open('', '_blank');
+  if (!w) return toast('ポップアップを許可してください');
+  let body;
+  if (grid) {
+    const lines = text.split('\n');
+    const pages = [];
+    for (let i = 0; i < lines.length; i += 26) pages.push(lines.slice(i, i + 26));
+    body = pages.map((p, n) => `<section class="pg">${p.map(l => `<div class="ln">${esc(l) || '&nbsp;'}</div>`).join('')}<div class="pno">${n + 1} / ${pages.length}</div></section>`).join('');
+  } else {
+    body = `<pre>${esc(text)}</pre>`;
+  }
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>${esc(title)}</title>
+    <style>
+      body { margin: 0; font-family: "BIZ UDMincho", "Yu Mincho", "MS Mincho", serif; }
+      pre { white-space: pre-wrap; font-family: inherit; font-size: 12pt; line-height: 1.8; margin: 20mm; }
+      .pg { width: 20em; margin: 18mm auto; font-size: 14pt; line-height: 1.75; page-break-after: always; position: relative; }
+      .pg:last-child { page-break-after: auto; }
+      .ln { white-space: pre; letter-spacing: 0; }
+      .pno { text-align: center; font-size: 9pt; color: #666; margin-top: 8mm; }
+    </style>${body}`);
+  w.document.close();
+  w.focus(); w.print();
 }
 
 function paneInfo(c, pane) {
@@ -890,7 +1098,7 @@ async function exportAll() {
   const imgs = await idb.all();
   const images = await Promise.all(imgs.map(i => new Promise(res => {
     const r = new FileReader();
-    r.onload = () => res({ id: i.id, caseId: i.caseId, name: i.name, date: i.date, data: r.result });
+    r.onload = () => res({ id: i.id, caseId: i.caseId, name: i.name, date: i.date, kind: i.kind, data: r.result });
     r.readAsDataURL(i.blob);
   })));
   download(`tonzura-navi-backup-${today()}.json`, JSON.stringify({ ...state, images }), 'application/json');
@@ -905,7 +1113,7 @@ async function importAll(e) {
     for (const i of await idb.all()) await idb.del(i.id);
     for (const i of data.images || []) {
       const blob = await (await fetch(i.data)).blob();
-      await idb.put({ id: i.id, caseId: i.caseId, name: i.name, date: i.date, blob });
+      await idb.put({ id: i.id, caseId: i.caseId, name: i.name, date: i.date, kind: i.kind, blob });
     }
     delete data.images;
     state = data; save(); toast('読み込みました'); render();

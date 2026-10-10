@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://toybox-anime.github.io/tonzura-navi/sitemap.xml

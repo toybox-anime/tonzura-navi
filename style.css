@@ -149,3 +149,15 @@ footer.note { font-size: 12px; color: var(--sub); margin-top: 32px; }
   body { background: #fff; color: #000; }
   pre.doc { border: none; background: none; font-size: 12pt; }
 }
+.thumbs select.kind { margin-top: 4px; padding: 3px 4px; font-size: 12px; }
+details.card summary { cursor: pointer; }
+.prevent a { color: var(--accent); }
+.share-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.share-row .btn { flex: 1; text-align: center; min-width: 120px; }
+.btn.line { background: #06c755; }
+.guides-static { max-width: 720px; margin: 0 auto; padding: 0 16px 48px; font-size: 14px; }
+.guides-static h2 { font-size: 15px; color: var(--sub); }
+.guides-static ul { padding-left: 18px; margin: 0; }
+.guides-static li { margin: 6px 0; }
+.guides-static a { color: var(--sub); }
+.guides-static.hidden { display: none; }

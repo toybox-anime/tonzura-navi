@@ -1,0 +1,15 @@
+.home-link { color: #fff; font-weight: 700; font-size: 18px; text-decoration: none; }
+main.guide { font-size: 16px; }
+.guide h1 { font-size: 22px; line-height: 1.45; margin: 8px 0 4px; }
+.guide h2 { font-size: 18px; margin: 28px 0 8px; padding-left: 10px; border-left: 4px solid var(--accent); }
+.guide .updated { font-size: 12px; color: var(--sub); margin: 0 0 12px; }
+.guide .lead { font-size: 17px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.guide ul, .guide ol { padding-left: 22px; }
+.guide li { margin: 6px 0; }
+.guide a { color: var(--accent); }
+.guide a.btn { color: #fff; margin-top: 24px; }
+.now-box { background: var(--accent-soft); border-radius: var(--radius); padding: 4px 16px 8px; margin-top: 28px; }
+.now-box h2 { border: none; padding: 0; }
+.share-box h2, .related h2, .sources h2 { font-size: 16px; }
+.sources li { font-size: 13px; }
+.center { text-align: center; }
