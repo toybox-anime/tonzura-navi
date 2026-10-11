@@ -238,6 +238,7 @@ TEMPLATE = """<!doctype html>
 <h2>参考にした情報</h2>
 <ul>{sources}</ul>
 <p class="sub">このページは手続きの案内で、法律相談ではありません。具体的な判断は、警察・消費生活センター・弁護士などに相談してください。</p>
+<p class="sub">運営：ナノトイラボ（<a href="../about.html">運営者情報・プライバシーポリシー</a>）</p>
 </section>
 </article>
 </main>
@@ -276,7 +277,7 @@ def build():
         )
         (out_dir / f"{p['slug']}.html").write_text(html, encoding="utf-8")
 
-    urls = [SITE] + [f"{SITE}guide/{p['slug']}.html" for p in PAGES]
+    urls = [SITE] + [f"{SITE}guide/{p['slug']}.html" for p in PAGES] + [f"{SITE}about.html"]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     sitemap += [f"  <url><loc>{u}</loc><lastmod>{UPDATED_ISO}</lastmod></url>" for u in urls]

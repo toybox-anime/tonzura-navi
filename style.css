@@ -163,3 +163,4 @@ details.card summary { cursor: pointer; }
 .guides-static.hidden { display: none; }
 /* 内容証明の整形後：1行20字がそろって見えるよう等幅にする */
 textarea.grid20 { font-family: "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; font-size: 15px; line-height: 1.7; width: calc(20em + 26px); max-width: 100%; }
+footer.note a { color: var(--sub); }

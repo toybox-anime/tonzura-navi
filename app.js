@@ -670,7 +670,7 @@ function renderHome() {
       <label class="btn sub-btn small" style="margin:0">読み込む<input type="file" id="importFile" accept="application/json" hidden></label>
     </div>
     ${heartCard()}
-    <footer class="note">このアプリは手続きの案内と文書の下書きを作るツールで、法律相談ではありません。具体的な判断は弁護士・司法書士・警察などに相談してください。内容は2026年10月時点のPayPay公式ヘルプなどをもとにしています。</footer>`;
+    <footer class="note">このアプリは手続きの案内と文書の下書きを作るツールで、法律相談ではありません。具体的な判断は弁護士・司法書士・警察などに相談してください。内容は2026年10月時点のPayPay公式ヘルプなどをもとにしています。<br>運営：ナノトイラボ（<a href="about.html">運営者情報・プライバシーポリシー</a>）</footer>`;
 
   $app.querySelector('#lineShare').onclick = shareLine;
   $app.querySelector('#cardShare').onclick = shareCard;
@@ -1121,4 +1121,9 @@ async function importAll(e) {
   } catch (err) { toast('読み込めないファイルです'); }
 }
 
+// about.html の「相談先の一覧」リンク（./#contacts）から来たとき
+if (location.hash === '#contacts') {
+  route = { name: 'contacts' };
+  history.replaceState(null, '', location.pathname);
+}
 render();
