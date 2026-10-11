@@ -959,6 +959,7 @@ async function paneDocs(c, pane) {
   if (isNaiyou) pane.querySelector('#fmtBtn').onclick = () => {
     const lines = formatNaiyou(getText());
     ta.value = lines.join('\n');
+    ta.classList.add('grid20');
     formatted = true;
     const pages = Math.max(1, Math.ceil(lines.length / 26));
     const f = naiyouFee(pages);
