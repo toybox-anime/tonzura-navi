@@ -42,7 +42,13 @@
 - 二次被害（回収詐欺）への注意、「法律相談ではありません」の注記、よりそいホットラインの案内
 - `drafts/`（gitの管理外。記事の下書き）
 
+## 公式ページに接続できないとき
+- クラウドの実行環境では、公式サイト（paypay.ne.jp、post.japanpost.jp など）に WebFetch で接続できないことがある（2026-10-22の初回実行で確認）
+- そのときは WebSearch を試す。それでも公式の記述を確かめられなければ、**情報は一切変えない**。別の改善（バグ・使いやすさ）を選び、PR本文に「公式情報は確認できなかった」と書く
+- 確かめられなかった情報を、記憶や推測で直さない
+
 ## 環境メモ
+- `gh pr create` が使えない環境では、GitHubのツールでPRを作り、`gh api repos/toybox-anime/tonzura-navi/issues/<番号>/labels -f 'labels[]=routine'` でラベルを付ける
 - ビルドはない。素のHTML/CSS/JS。動作確認したいときは `python -m http.server` で開ける
 - 解説ページ `guide/*.html` と `sitemap.xml` は `tools/build_guides.py` が生成する。HTMLを直接編集しない
 - 共有用の画像 `og.png` / `card.png` は `tools/make_images.py`（Pillow・日本語フォントが要る。クラウドでは触らなくてよい）
