@@ -8,12 +8,14 @@ from html import escape
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://toybox-anime.github.io/tonzura-navi/"
-UPDATED = "2026年10月10日"
-UPDATED_ISO = "2026-10-10"
+UPDATED = "2026年10月22日"
+UPDATED_ISO = "2026-10-22"
 
 SRC = {
     "pp_help": ("PayPay ヘルプ：不正利用・詐欺対策について", "https://paypay.ne.jp/help/c0176/"),
     "pp_report": ("PayPay ヘルプ：詐欺の疑いがある取引の報告", "https://paypay.ne.jp/help/c0363/"),
+    "pp_report_how": ("PayPay ヘルプ：詐欺等の疑いがある送る・受け取るを利用した取引を報告したい", "https://paypay.ne.jp/help/c0538/"),
+    "pp_hosho": ("PayPay ヘルプ：不正利用の補償について", "https://paypay.ne.jp/help/c0117/"),
     "pp_limit": ("PayPay ヘルプ：受け取り期限", "https://paypay.ne.jp/help/c0091/"),
     "pp_contact": ("PayPay ヘルプ：お問い合わせ窓口", "https://paypay.ne.jp/help/c0005/"),
     "pp_notice": ("PayPay：詐欺被害防止のお知らせ（2025年12月）", "https://paypay.ne.jp/notice/20251219/s-01/"),
@@ -31,8 +33,9 @@ NOW = """<ol class="now">
 <li><b>まだ取り消せないか確認</b>：PayPayの取引履歴でその送金が「受け取り待ち」なら、取り消せます。</li>
 <li><b>これ以上は送らない</b>：「返金のため」「手数料」「税金」と言われても払わない。相手の指示でPayPayを操作しない。</li>
 <li><b>証拠をスクショ</b>：取引履歴・相手のプロフィール・やりとりを、消される前に保存。</li>
-<li><b>警察（#9110）とPayPayに相談</b>：PayPayはヘルプ「詐欺等の疑いがある送る・受け取るを利用した取引を報告したい」から。電話は0120-990-634（24時間）。</li>
-</ol>"""
+<li><b>警察（#9110）とPayPayに相談</b>：PayPayは、アプリの「送る」→ 相手とのチャット → その取引 →「取引を報告する」から報告できます（過去90日以内の取引）。電話は0120-990-634（24時間）。</li>
+</ol>
+<p><b>自分では送っていないのに</b>、支払いや送金がされていたときは「不正利用」です。やることが違うので、<a href="fusei-riyou.html">不正利用のときにやること</a>を見てください。</p>"""
 
 PAGES = [
     {
@@ -87,7 +90,7 @@ PAGES = [
 <h2>送ってしまったら</h2>
 <p>まず取引履歴を見て、<b>「受け取り待ち」なら取り消してください</b>。そのうえで、相手とのやりとりを止め、証拠を残し、消費者ホットライン（<b>188</b>）、警察（<b>#9110</b>）、PayPayに相談します。</p>
 """,
-        "sources": ["kokusen", "pp_notice", "pp_notice2", "pp_report"],
+        "sources": ["kokusen", "pp_notice", "pp_notice2", "pp_report_how"],
     },
     {
         "slug": "ticket-sagi",
@@ -117,7 +120,7 @@ PAGES = [
 <li>相場より安すぎる、急がせる、別のアプリに誘導する相手は避ける</li>
 </ul>
 """,
-        "sources": ["pp_notice", "pp_notice2", "pp_report", "court"],
+        "sources": ["pp_notice", "pp_notice2", "pp_report_how", "court"],
     },
     {
         "slug": "toushi-romance",
@@ -186,6 +189,41 @@ PAGES = [
 """,
         "sources": ["post", "court", "moj"],
     },
+    {
+        "slug": "fusei-riyou",
+        "title": "身に覚えのないPayPayの支払い・送金があったら（不正利用・乗っ取り）",
+        "desc": "自分では操作していないのにPayPayで支払いや送金がされていた。乗っ取りやスマホの紛失による不正利用のときにやること、補償の条件（60日以内・警察への届出など）をPayPay公式ヘルプをもとにまとめました。",
+        "lead": "自分で送ってしまったのか、勝手に使われたのかで、<b>相談する窓口も、補償も変わります</b>。まずどちらかを確かめましょう。",
+        "body": """
+<h2>まず見分ける</h2>
+<ul>
+<li><b>自分で「送る」を操作して送った</b>（だまされて送った）：詐欺の報告をします。自分で送った取引は<b>PayPayの補償の対象外</b>です。<a href="torikeshi.html">送金を取り消せるか</a>から確認してください</li>
+<li><b>自分は操作していないのに</b>、支払い・送金・チャージがされていた（乗っ取り、スマホの紛失・盗難、偽サイトにログイン情報を入れてしまった など）：<b>不正利用</b>です。条件を満たせば補償の対象になります</li>
+</ul>
+
+<h2>不正利用のときにやること</h2>
+<ol>
+<li><b>スマホをなくした・盗まれた</b>なら、PayPayの紛失・盗難専用窓口 <b>0120-990-633</b>（24時間）に連絡する</li>
+<li><b>クレジットカードで支払われていた</b>なら、まずカード会社に連絡する</li>
+<li><b>警察に被害を届け出る</b>。補償の申請より<b>先に</b>必要です。届出がないと、PayPayに電話やメールをしても対応してもらえません</li>
+<li>損害が出た日から<b>60日以内</b>に、「不正利用被害に伴う補償申請フォーム」から申請する。電話や問い合わせフォームでは受け付けていません</li>
+<li>偽サイトや、PayPayを名乗る不審なメール・SMSがきっかけなら、フィッシング通報フォームからも報告する</li>
+</ol>
+<p>申請フォームは、メールやSMSで届いたリンクからではなく、<b>PayPayアプリや公式ヘルプから自分でたどって</b>開いてください。</p>
+
+<h2>補償の条件</h2>
+<ul>
+<li>損害が出た日から60日以内に申請すること</li>
+<li>警察に被害を届け出ていること</li>
+<li>家族や同居人などによる利用ではないこと</li>
+<li>初めての申請か、前回の申請から1年を超えていること</li>
+<li>そのほか、PayPayの審査条件を満たしていること</li>
+</ul>
+<p>本人に故意や重大な過失があった場合は、補償されないことがあります。ほかから補償を受けられる場合は、その差額が対象です。審査には、申請から2〜3か月ほどかかります。</p>
+<p>申請の前に本人確認を済ませておくと、確認がスムーズになると案内されています。</p>
+""",
+        "sources": ["pp_hosho", "pp_help", "pp_contact"],
+    },
 ]
 
 TEMPLATE = """<!doctype html>
@@ -214,10 +252,7 @@ TEMPLATE = """<!doctype html>
 <p class="updated">最終更新：{updated}</p>
 <p class="lead">{lead}</p>
 {body}
-<section class="now-box">
-<h2>被害にあったら、いますぐやること</h2>
-{now}
-</section>
+{now_box}
 <a class="btn block big" href="../">記録をつけて、取り戻す手順を見る（無料）</a>
 <p class="sub center">入力した内容はあなたの端末の中だけに保存されます。</p>
 
@@ -256,6 +291,13 @@ document.querySelectorAll('[data-share]').forEach(function (b) {{
 """
 
 
+def now_box(p):
+    # 不正利用のページは手順がちがうので、だまされて送ったとき向けの共通手順は出さない
+    if p["slug"] == "fusei-riyou":
+        return ""
+    return f'<section class="now-box">\n<h2>被害にあったら、いますぐやること</h2>\n{NOW}\n</section>'
+
+
 def build():
     out_dir = ROOT / "guide"
     out_dir.mkdir(exist_ok=True)
@@ -272,7 +314,7 @@ def build():
         )
         html = TEMPLATE.format(
             title=escape(p["title"]), desc=escape(p["desc"]), url=url, site=SITE,
-            updated=UPDATED, lead=p["lead"], body=p["body"].strip(), now=NOW,
+            updated=UPDATED, lead=p["lead"], body=p["body"].strip(), now_box=now_box(p),
             share=quote(f"{p['title']}\n{url}"), related=related, sources=sources,
         )
         (out_dir / f"{p['slug']}.html").write_text(html, encoding="utf-8")
