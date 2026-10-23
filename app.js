@@ -651,9 +651,11 @@ function renderHome() {
       </div>`;
     }).join('')}
 
+    <div id="introSlot"></div>
+
     <h2>知っておくと防げること</h2>
     <div class="card prevent">
-      <p class="sub">よくある手口を、図とことばでまとめました。被害にあう前に、家族や友だちにも教えてあげてください。</p>
+      <p class="sub">よくある手口と、そのときにやることをまとめました。被害にあう前に、家族や友だちにも教えてあげてください。</p>
       <ul style="padding-left:18px;margin:6px 0">
         ${GUIDES.map(([href, t]) => `<li><a href="${href}">${t}</a></li>`).join('')}
       </ul>
@@ -677,6 +679,8 @@ function renderHome() {
     ${heartCard()}
     <footer class="note">このアプリは手続きの案内と文書の下書きを作るツールで、法律相談ではありません。具体的な判断は弁護士・司法書士・警察などに相談してください。内容は2026年10月時点のPayPay公式ヘルプなどをもとにしています。<br>運営：ナノトイラボ（<a href="about.html">運営者情報・プライバシーポリシー</a>）</footer>`;
 
+  // index.html に直接書いた「できること」「安心して使ってもらうために」をホームに差し込む
+  if (introEl) $app.querySelector('#introSlot').replaceWith(introEl);
   $app.querySelector('#lineShare').onclick = shareLine;
   $app.querySelector('#cardShare').onclick = shareCard;
   $app.querySelector('#textShare').onclick = shareText;
@@ -1133,4 +1137,6 @@ if (location.hash === '#contacts') {
   route = { name: 'contacts' };
   history.replaceState(null, '', location.pathname);
 }
+// JavaScriptが動く前・検索エンジン向けに index.html に書いてある紹介文。描画で消える前に取っておく
+const introEl = document.getElementById('intro');
 render();

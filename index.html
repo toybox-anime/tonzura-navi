@@ -24,9 +24,42 @@
   <button id="fontBtn" class="font-btn" aria-label="文字の大きさを切り替える">文字 大</button>
 </header>
 <main id="app">
+  <!-- JavaScriptが動くと app.js がホーム画面に描き直す。#intro はホーム画面の中に差し込まれる -->
+  <div class="hero">
+    <p class="hero-lead">お金を送って、相手と連絡が取れなくなった方へ</p>
+    <p>ここに来てくれてよかったです。<b>悪いのはあなたではなく、だました相手</b>です。いまからでも、できることはあります。順番に一緒に進めましょう。</p>
+  </div>
   <noscript>
-    <p>このツールを使うにはJavaScriptを有効にしてください。下の解説ページはそのまま読めます。</p>
+    <p class="alert yellow">このツールを使うにはJavaScriptを有効にしてください。下の説明と解説ページは、そのまま読めます。</p>
   </noscript>
+  <section id="intro" class="intro">
+    <h2>このサイトでできること</h2>
+    <div class="feature-grid">
+      <div class="card feature">
+        <p class="feature-no">1</p>
+        <h3>取り消せるか、まず確認</h3>
+        <p>相手がまだ「受け取り待ち」なら、PayPayの送金は取り消せます。被害にあった直後にやることを、5つにしぼって案内します。</p>
+      </div>
+      <div class="card feature">
+        <p class="feature-no">2</p>
+        <h3>次にやることを、順番に</h3>
+        <p>貸したお金・個人間の取引・詐欺に分けて、PayPayや警察への相談から、内容証明・少額訴訟まで、あなたに合った手順を示します。</p>
+      </div>
+      <div class="card feature">
+        <p class="feature-no">3</p>
+        <h3>証拠と文面をまとめる</h3>
+        <p>スクショや出来事を時系列に整理して、警察への相談メモ、PayPayへの問い合わせ文、内容証明の下書きを作ります。</p>
+      </div>
+    </div>
+
+    <h2>安心して使ってもらうために</h2>
+    <ul class="trust">
+      <li><b>入力した内容は、この端末の中だけに保存します。</b>運営者を含め、どこにも送信しません。</li>
+      <li><b>公式の情報をもとにしています。</b>PayPayのヘルプや、日本郵便・法務省などの公開情報を確認して書いています。</li>
+      <li><b>お金が戻ると約束することはしません。</b>見通しは正直に伝えます。法律相談ではないので、最後の判断は専門家や公的な窓口へ。</li>
+      <li><b>無料・登録なし・広告なし。</b>個人で開発・運営しています（<a href="about.html">運営者情報</a>）。</li>
+    </ul>
+  </section>
 </main>
 <nav class="guides-static" aria-label="手口別の解説">
   <h2>手口別の解説</h2>

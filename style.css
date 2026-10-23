@@ -166,3 +166,23 @@ details.card summary { cursor: pointer; }
 /* 内容証明の整形後：1行20字がそろって見えるよう等幅にする */
 textarea.grid20 { font-family: "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; font-size: 15px; line-height: 1.7; width: calc(20em + 26px); max-width: 100%; }
 footer.note a { color: var(--sub); }
+/* ホームの「できること」「安心して使ってもらうために」 */
+.intro { margin-top: 8px; }
+.feature-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 640px) { .feature-grid { grid-template-columns: repeat(3, 1fr); } }
+.card.feature { margin: 0; }
+.card.feature p { font-size: 14px; color: var(--sub); }
+.feature-no {
+  width: 28px; height: 28px; border-radius: 50%; margin: 0 0 6px !important;
+  display: grid; place-items: center; font-weight: 700; font-size: 14px !important;
+  background: var(--accent-soft); color: var(--accent) !important;
+}
+.trust { list-style: none; padding: 0; margin: 0; }
+.trust li {
+  position: relative; padding: 10px 12px 10px 38px; margin: 8px 0; font-size: 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.trust li::before {
+  content: "✓"; position: absolute; left: 13px; top: 10px; color: var(--ok); font-weight: 700;
+}
+.trust a { color: var(--accent); }
