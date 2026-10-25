@@ -46,6 +46,7 @@ body {
 .icon-btn {
   background: none; border: none; color: inherit;
   font-size: 28px; line-height: 1; padding: 0 8px 4px 0; cursor: pointer;
+  min-width: 44px; min-height: 44px;
 }
 main { max-width: 720px; margin: 0 auto; padding: 16px 16px 80px; }
 h2 { font-size: 17px; margin: 24px 0 8px; }
@@ -70,7 +71,7 @@ p { margin: 6px 0; }
 }
 :focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
 .btn.sub-btn { background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 500; }
-.btn.small { padding: 6px 10px; font-size: 13px; }
+.btn.small { padding: 10px 12px; font-size: 14px; min-height: 44px; }
 .btn.block { display: block; width: 100%; text-align: center; margin: 8px 0; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 label { display: block; font-size: 14px; font-weight: 600; margin: 12px 0 4px; }
@@ -88,7 +89,7 @@ textarea { min-height: 90px; resize: vertical; }
 .radio-card input { width: auto; margin-top: 5px; }
 .tabs { display: flex; gap: 4px; margin: 4px 0 12px; overflow-x: auto; }
 .tab {
-  flex: 1; white-space: nowrap; padding: 8px 10px; border-radius: 8px;
+  flex: 1; white-space: nowrap; padding: 12px 10px; min-height: 44px; border-radius: 8px;
   border: 1px solid var(--line); background: var(--card); color: var(--text);
   font: inherit; font-size: 14px; cursor: pointer;
 }
@@ -119,11 +120,11 @@ pre.doc {
 .tl li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
 .tl li .d { flex: none; width: 92px; color: var(--sub); }
 .tl li .t { flex: 1; min-width: 0; word-break: break-word; }
-.del { background: none; border: none; color: var(--sub); cursor: pointer; font-size: 16px; }
+.del { background: none; border: none; color: var(--sub); cursor: pointer; font-size: 16px; min-width: 44px; min-height: 44px; }
 .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
 .thumbs figure { margin: 0; position: relative; }
 .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); cursor: zoom-in; }
-.thumbs .del { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,.55); color: #fff; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; }
+.thumbs .del { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,.55); color: #fff; border-radius: 50%; width: 36px; height: 36px; min-width: 36px; min-height: 36px; font-size: 14px; }
 .thumbs figcaption { font-size: 11px; color: var(--sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .toast {
   position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
