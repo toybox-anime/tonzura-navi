@@ -68,8 +68,8 @@ function daysSince(iso) {
 }
 function toast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.hidden = false;
-  clearTimeout(toast._t); toast._t = setTimeout(() => (t.hidden = true), 2200);
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2200);
 }
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); toast('コピーしました'); }
