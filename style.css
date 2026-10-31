@@ -5,6 +5,7 @@
   --sub: #5f6878;
   --line: #e1e5ec;
   --accent: #e5322d;
+  --accent-bg: #d42a25;
   --accent-soft: #fdecea;
   --ok: #1f9d55;
   --ok-soft: #e6f6ed;
@@ -20,6 +21,7 @@
     --sub: #9aa3b2;
     --line: #2e3540;
     --accent: #ff5a52;
+    --accent-bg: #c2231f;
     --accent-soft: #3a1f1e;
     --ok: #3ccf7d;
     --ok-soft: #173225;
@@ -40,7 +42,7 @@ body {
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px;
-  background: var(--accent); color: #fff;
+  background: var(--accent-bg); color: #fff;
 }
 .top h1 { font-size: 18px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .icon-btn {
@@ -66,7 +68,7 @@ p { margin: 6px 0; }
 .btn {
   display: inline-block; border: none; border-radius: 10px;
   padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer;
-  background: var(--accent); color: #fff; text-decoration: none;
+  background: var(--accent-bg); color: #fff; text-decoration: none;
   font-family: inherit;
 }
 :focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
@@ -93,7 +95,7 @@ textarea { min-height: 90px; resize: vertical; }
   border: 1px solid var(--line); background: var(--card); color: var(--text);
   font: inherit; font-size: 14px; cursor: pointer;
 }
-.tab.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab.on { background: var(--accent-bg); color: #fff; border-color: var(--accent-bg); }
 .step { display: flex; gap: 12px; }
 .step .num {
   flex: none; width: 28px; height: 28px; border-radius: 50%;
