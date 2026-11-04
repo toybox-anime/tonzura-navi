@@ -950,7 +950,7 @@ async function paneDocs(c, pane) {
       <button class="btn small" id="fmtBtn">1行20字・26行に整える</button>
       <div id="fmtInfo"></div>
     </div>` : ''}
-    <textarea id="docText" style="min-height:420px;font-size:14px">${esc(text)}</textarea>
+    <textarea id="docText" style="min-height:420px;font-size:16px">${esc(text)}</textarea>
     <div class="row no-print" style="margin-top:8px">
       <button class="btn" id="copyBtn">コピー</button>
       <button class="btn sub-btn" id="printBtn">印刷・PDF保存</button>
