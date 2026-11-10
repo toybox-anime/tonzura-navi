@@ -516,7 +516,12 @@ ${f.amount ? Number(f.amount).toLocaleString() + '円' : '【金額】'}をPayPa
 // ---------- 画面 ----------
 let route = { name: 'home' };
 let draft = null;
-function go(r) { route = r; render(); window.scrollTo(0, 0); }
+function go(r) {
+  const changed = r.name !== route.name;
+  route = r; render(); window.scrollTo(0, 0);
+  // 画面が変わったとき、読み上げ機器やキーボードの人にも伝わるよう見出しへフォーカスを移す
+  if (changed) { const t = document.getElementById('pageTitle'); t.tabIndex = -1; t.focus({ preventScroll: true }); }
+}
 const backBtn = document.getElementById('backBtn');
 backBtn.onclick = () => {
   if (['case', 'new', 'loan', 'contacts', 'sos', 'check'].includes(route.name)) go({ name: 'home' });
