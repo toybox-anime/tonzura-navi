@@ -191,3 +191,4 @@ footer.note a { color: var(--sub); }
   content: "✓"; position: absolute; left: 13px; top: 10px; color: var(--ok); font-weight: 700;
 }
 .trust a { color: var(--accent); }
+#pageTitle:focus { outline: none; }
