@@ -981,7 +981,7 @@ async function paneDocs(c, pane) {
     pane.querySelector('#fmtInfo').innerHTML = `
       <p><b>${lines.length}行 → 謄本 ${pages}枚</b></p>
       <p class="sub">料金の目安：内容証明 ${f.naiyou.toLocaleString()}円＋郵便 110円＋一般書留 480円＋配達証明 350円＝<b>${f.total.toLocaleString()}円</b><br>
-      （日本郵便の料金表〔2025年11月時点〕をもとにした目安です。出す前に窓口で確認してください）</p>
+      （日本郵便の料金表〔2026年11月11日に確認〕をもとにした目安です。出す前に窓口で確認してください）</p>
       <ul class="sub" style="padding-left:18px;margin:6px 0">
         <li>同じものを<b>3通</b>用意（相手に送る1通・郵便局の保管用・自分の控え）。コピーでOK</li>
         <li>2枚以上になったら、つづり目に<b>契印</b>（はんこ）を押す</li>
