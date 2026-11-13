@@ -98,6 +98,7 @@ const GUIDES = [
   ['guide/torikeshi.html', 'PayPayの送金は取り消せる？「受け取り待ち」なら間に合う'],
   ['guide/henkin-sagi.html', '「PayPayで返金します」は詐欺の合図'],
   ['guide/ticket-sagi.html', 'チケット・フリマの先払いで相手が消えた'],
+  ['guide/akushitsu-tsuhan.html', 'ネット通販で「送る」で払ったのに商品が届かない'],
   ['guide/toushi-romance.html', '投資・副業・ロマンス詐欺でPayPay送金した'],
   ['guide/kashikin.html', '友だちに貸したお金が返ってこない'],
   ['guide/fusei-riyou.html', '身に覚えのない支払い・送金があった（不正利用）'],
