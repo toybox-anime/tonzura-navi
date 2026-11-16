@@ -843,7 +843,7 @@ async function paneEvidence(c, pane) {
     <p class="sub">PayPayの取引履歴を開くと、取引ごとに日時・金額・取引番号が表示されます。</p>
     <ul class="tl">${c.transfers.map(t => `<li><span class="d">${t.date ? jdate(t.date).replace(/^\d+年/, '') : '日付なし'}</span>
       <span class="t"><b>${yen(t.amount)}</b>${t.txid ? `<br><span class="sub">取引番号 ${esc(t.txid)}</span>` : ''}${t.memo ? `<br><span class="sub">${esc(t.memo)}</span>` : ''}</span>
-      <button class="del" data-deltr="${t.id}" aria-label="削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
+      <button class="del" data-deltr="${t.id}" aria-label="この送金の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
     <div class="card">
       <div class="row"><input type="date" id="trDate" value="${today()}" style="flex:1"><input type="number" id="trAmt" placeholder="金額" inputmode="numeric" style="flex:1"></div>
       <input id="trTx" placeholder="取引番号（任意）" style="margin-top:8px">
@@ -863,7 +863,7 @@ async function paneEvidence(c, pane) {
 
     <h2>出来事の記録（時系列）</h2>
     <p class="sub">「◯日に返すと言われた」「既読無視された」「ブロックされた」など。警察・裁判所向けの文書に自動で入ります。</p>
-    <ul class="tl">${c.timeline.slice().sort((a, b) => a.date.localeCompare(b.date)).map(t => `<li><span class="d">${jdate(t.date).replace(/^\d+年/, '')}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
+    <ul class="tl">${c.timeline.slice().sort((a, b) => a.date.localeCompare(b.date)).map(t => `<li><span class="d">${jdate(t.date).replace(/^\d+年/, '')}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="この出来事の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
     <div class="card">
       <input type="date" id="tlDate" value="${today()}">
       <textarea id="tlText" placeholder="例：LINEで「来週返す」と言われた" style="margin-top:8px;min-height:60px"></textarea>
@@ -875,7 +875,7 @@ async function paneEvidence(c, pane) {
   imgs.forEach(i => {
     const url = URL.createObjectURL(i.blob);
     const fig = document.createElement('figure');
-    fig.innerHTML = `<img src="${url}" alt="${esc(i.name)}"><button class="del" aria-label="削除">✕</button>
+    fig.innerHTML = `<img src="${url}" alt="${esc(i.name)}"><button class="del" aria-label="この画像を削除">✕</button>
       <select class="kind" aria-label="画像の種類">${['pay', 'talk', 'profile', 'other'].map(k => `<option value="${k}" ${(i.kind || 'other') === k ? 'selected' : ''}>${EVIDENCE_KINDS[k].short}</option>`).join('')}</select>`;
     fig.querySelector('.kind').onchange = async (e) => { i.kind = e.target.value; await idb.put(i); toast('種類を変更しました'); };
     fig.querySelector('img').onclick = () => {
