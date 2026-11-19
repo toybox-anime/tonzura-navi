@@ -21,7 +21,7 @@ SRC = {
     "pp_notice": ("PayPay：詐欺被害防止のお知らせ（2025年12月）", "https://paypay.ne.jp/notice/20251219/s-01/"),
     "pp_notice2": ("PayPay：不正利用・詐欺に関するお知らせ（2026年8月）", "https://paypay.ne.jp/notice/20260828/s-01/"),
     "itmedia": ("ITmedia：PayPayの誤送金はなぜ強制キャンセルできないか（2026年6月）", "https://www.itmedia.co.jp/mobile/articles/2606/13/news002.html"),
-    "kokusen": ("国民生活センター：「〇〇ペイで返金します」は詐欺を疑って（Impress記事）", "https://internet.watch.impress.co.jp/docs/news/1613525.html"),
+    "kokusen": ("国民生活センター：「○○ペイで返金します」と言われたら詐欺を疑って", "https://www.kokusen.go.jp/mimamori/mj_mailmag/mj-shinsen494.html"),
     "fsa": ("金融庁：被害回復等を装った詐欺（二次被害トラブル）にご注意ください（2026年9月）", "https://www.fsa.go.jp/ordinary/chuui/20260901.html"),
     "kokusen_tsuhan": ("国民生活センター：悪質通販サイトにご注意ください（2026年6月17日）", "https://www.kokusen.go.jp/news/data/n-20260617_1.html"),
     "court": ("裁判所：少額訴訟", "https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_04_02_02/index.html"),
