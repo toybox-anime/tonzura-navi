@@ -570,10 +570,10 @@ function renderSos() {
     ['銀行振込もしたなら銀行へ', '振込先の銀行に電話すると、相手の口座を止めてもらえることがあります。'],
   ];
   $app.innerHTML = `
-    <div class="alert green"><b>まず、ゆっくり息をはいてください。</b><br>
+    <div class="alert note"><b>まず、ゆっくり息をはいてください。</b><br>
       だまされたのは、あなたが悪いからではありません。手口は、だますことを仕事にしている人たちが何度も練り直したものです。誰でも引っかかります。<br>
       いまは、上から順番にやっていけば大丈夫です。</div>
-    <div class="alert yellow"><b>自分では送っていないのに</b>、支払いや送金がされていた（乗っ取り・スマホの紛失など）なら「不正利用」です。やることが少し違い、補償の対象になることがあります。<br>
+    <div class="alert note"><b>自分では送っていないのに</b>、支払いや送金がされていた（乗っ取り・スマホの紛失など）なら「不正利用」です。やることが少し違い、補償の対象になることがあります。<br>
       <a href="guide/fusei-riyou.html">不正利用のときにやること</a></div>
     ${items.map(([t, b], i) => `
       <label class="card step sos-item">
@@ -786,7 +786,7 @@ function paneSteps(c, pane) {
       <p class="sub">${p.done} / ${p.total} 完了</p>
       ${c.remindAt ? `<p class="sub">次の確認日：${jdate(c.remindAt)}${c.remindAt <= today() ? ' <span class="badge warn">今日以前</span>' : ''}</p>` : ''}
     </div>
-    <div class="alert green"><b>これからの見通し</b><br>${outlook(c)}</div>
+    <div class="alert note"><b>これからの見通し</b><br>${outlook(c)}</div>
     ${c.type === 'scam' ? '<div class="alert yellow">詐欺の場合は、相手に連絡して刺激するより<b>警察への相談とPayPayへの報告を急いで</b>ください。相手の口座やアカウントにお金が残っているうちが勝負です。</div>' : ''}
     ${steps.map((s, i) => {
       const done = c.done && c.done[s.key];
@@ -941,7 +941,7 @@ async function paneDocs(c, pane) {
   const isNaiyou = sel === 'naiyou';
   pane.innerHTML = `
     <select id="docSel" class="no-print">${keys.map(k => `<option value="${k}" ${k === sel ? 'selected' : ''}>${DOCS[k].title}</option>`).join('')}</select>
-    ${d.note ? `<div class="alert yellow no-print">${d.note}</div>` : ''}
+    ${d.note ? `<div class="alert note no-print">${d.note}</div>` : ''}
     <details class="card no-print" ${me.name ? '' : 'open'}>
       <summary><b>あなたの情報</b> <span class="sub">（入れると文書に自動で入ります・この端末だけに保存）</span></summary>
       <label for="me_name">名前</label><input id="me_name" value="${esc(me.name || '')}">
@@ -1052,7 +1052,7 @@ function paneInfo(c, pane) {
       <p><b>${TYPES[c.type].label}</b></p>
       ${FIELDS.map(([k, label, type]) => !c[k] ? '' : type === 'check' ? `<p>✓ ${label}</p>` : `<p><span class="sub">${label}</span><br>${esc(c[k]).replace(/\n/g, '<br>')}</p>`).join('')}
     </div>
-    ${!c.address ? '<div class="alert yellow">相手の<b>住所と本名</b>が分かると、内容証明や裁判に進めます。会話の中で聞き出せた情報や、配送伝票・振込名義などに手がかりがないか確認しましょう。</div>' : ''}
+    ${!c.address ? '<div class="alert note">相手の<b>住所と本名</b>が分かると、内容証明や裁判に進めます。会話の中で聞き出せた情報や、配送伝票・振込名義などに手がかりがないか確認しましょう。</div>' : ''}
     <button class="btn block" id="editBtn">情報を編集する</button>`;
   pane.querySelector('#editBtn').onclick = () => go({ name: 'edit', id: c.id });
 }
@@ -1061,7 +1061,7 @@ function renderLoan() {
   const f = state.loanDraft || { date: today() };
   const fields = [['lender', 'あなた（貸す人）の名前'], ['borrower', '借りる人の名前'], ['amount', '金額（円）', 'number'], ['date', '貸す日', 'date'], ['due', '返済期日', 'date'], ['method', '返済方法', 'text', 'PayPay送金で一括返済'], ['addr', '借りる人の住所'], ['tel', '借りる人の電話番号', 'tel']];
   $app.innerHTML = `
-    <div class="alert green">お金を貸す前の3つの備え
+    <div class="alert note">お金を貸す前の3つの備え
       <ol style="margin:6px 0;padding-left:20px">
         <li><b>本名・住所・電話番号</b>を聞いておく（これがないと裁判に進めません）</li>
         <li>金額と返済期日に、<b>文字で「同意します」</b>と返信してもらう</li>

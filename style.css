@@ -11,6 +11,7 @@
   --ok-soft: #e6f6ed;
   --warn: #b7791f;
   --warn-soft: #fdf5e3;
+  --note: #eceef2;
   --radius: 12px;
 }
 @media (prefers-color-scheme: dark) {
@@ -27,6 +28,7 @@
     --ok-soft: #173225;
     --warn: #f0b443;
     --warn-soft: #3a2f17;
+    --note: #262c35;
   }
 }
 * { box-sizing: border-box; }
@@ -38,13 +40,16 @@ body {
   font-size: 16px;
   line-height: 1.6;
 }
+/* スマホで1〜2文字だけ次の行に落ちないよう、文節で折り返す（未対応のブラウザでは従来どおり） */
+p, li, label, dd, .alert, .sub, .btn, h1, h2, h3 { word-break: auto-phrase; }
+h1, h2, h3, .hero-lead { text-wrap: balance; }
 .top {
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px;
   background: var(--accent-bg); color: #fff;
 }
-.top h1 { font-size: 18px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top h1 { font-size: 18px; line-height: 1.35; margin: 0; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .icon-btn {
   background: none; border: none; color: inherit;
   font-size: 28px; line-height: 1; padding: 0 8px 4px 0; cursor: pointer;
@@ -64,19 +69,20 @@ p { margin: 6px 0; }
 .alert { border-radius: var(--radius); padding: 12px 14px; margin: 10px 0; font-size: 14px; }
 .alert.red { background: var(--accent-soft); }
 .alert.yellow { background: var(--warn-soft); }
-.alert.green { background: var(--ok-soft); }
+.alert.note { background: var(--note); }
+.alert a { color: inherit; font-weight: 700; }
 .btn {
   display: inline-block; border: none; border-radius: 10px;
-  padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer;
+  padding: 10px 16px; font-size: 15px; font-weight: 700; cursor: pointer;
   background: var(--accent-bg); color: #fff; text-decoration: none;
   font-family: inherit;
 }
 :focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
-.btn.sub-btn { background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 500; }
+.btn.sub-btn { background: var(--card); color: var(--text); border: 1px solid var(--line); font-weight: 400; }
 .btn.small { padding: 10px 12px; font-size: 14px; min-height: 44px; }
 .btn.block { display: block; width: 100%; text-align: center; margin: 8px 0; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-label { display: block; font-size: 14px; font-weight: 600; margin: 12px 0 4px; }
+label { display: block; font-size: 14px; font-weight: 700; margin: 12px 0 4px; }
 input, select, textarea {
   width: 100%; font: inherit; color: var(--text);
   background: var(--card); border: 1px solid var(--line);
@@ -86,7 +92,7 @@ textarea { min-height: 90px; resize: vertical; }
 .radio-card {
   display: flex; gap: 10px; align-items: flex-start;
   border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 6px 0;
-  font-weight: 500; cursor: pointer; background: var(--card);
+  font-weight: 400; cursor: pointer; background: var(--card);
 }
 .radio-card input { width: auto; margin-top: 5px; }
 .tabs { display: flex; gap: 4px; margin: 4px 0 12px; overflow-x: auto; }
@@ -102,7 +108,7 @@ textarea { min-height: 90px; resize: vertical; }
   display: grid; place-items: center; font-weight: 700; font-size: 14px;
   background: var(--accent-soft); color: var(--accent);
 }
-.step.done .num { background: var(--ok-soft); color: var(--ok); }
+.step.done .num { background: var(--note); color: var(--sub); }
 .step.done h3 { text-decoration: line-through; color: var(--sub); }
 .step .body { flex: 1; min-width: 0; }
 .step ul { margin: 6px 0; padding-left: 20px; font-size: 14px; }
@@ -110,10 +116,10 @@ textarea { min-height: 90px; resize: vertical; }
   display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px;
   border-radius: 99px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: 2px;
 }
-.badge.ok { background: var(--ok-soft); color: var(--ok); }
+.badge.ok { background: var(--note); color: var(--sub); }
 .badge.warn { background: var(--warn-soft); color: var(--warn); }
 .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0; }
-.progress > div { height: 100%; background: var(--ok); }
+.progress > div { height: 100%; background: var(--sub); }
 pre.doc {
   white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 14px;
   background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 8px 0;
@@ -149,7 +155,7 @@ html.big main { zoom: 1.2; }
 .heart { margin-top: 28px; border-color: var(--ok); }
 .sos-item { cursor: pointer; align-items: flex-start; font-weight: 400; margin: 10px 0; }
 .sos-item .body p { font-size: 15px; }
-.sos-item input { width: 22px; height: 22px; flex: none; margin-top: 3px; accent-color: var(--ok); }
+.sos-item input { width: 22px; height: 22px; flex: none; margin-top: 3px; accent-color: var(--text); }
 footer.note { font-size: 13px; color: var(--sub); margin-top: 32px; }
 @media print {
   .top, .tabs, .btn, .no-print { display: none !important; }
@@ -158,7 +164,7 @@ footer.note { font-size: 13px; color: var(--sub); margin-top: 32px; }
 }
 .thumbs select.kind { margin-top: 4px; padding: 6px 4px; font-size: 16px; min-height: 44px; }
 details.card summary { cursor: pointer; }
-.prevent a { color: var(--accent); }
+.prevent a { color: var(--text); }
 .share-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .share-row .btn { flex: 1; text-align: center; min-width: 120px; }
 .btn.line { background: #057a35; }
@@ -171,24 +177,10 @@ details.card summary { cursor: pointer; }
 /* 内容証明の整形後：1行20字がそろって見えるよう等幅にする */
 textarea.grid20 { font-family: "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; font-size: 15px; line-height: 1.7; width: calc(20em + 26px); max-width: 100%; }
 footer.note a { color: var(--sub); }
-/* ホームの「できること」「安心して使ってもらうために」 */
+/* ホームの「できること」「安心して使ってもらうために」：カードや番号を使わず、文章と箇条書きで */
 .intro { margin-top: 8px; }
-.feature-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-@media (min-width: 640px) { .feature-grid { grid-template-columns: repeat(3, 1fr); } }
-.card.feature { margin: 0; }
-.card.feature p { font-size: 14px; color: var(--sub); }
-.feature-no {
-  width: 28px; height: 28px; border-radius: 50%; margin: 0 0 6px !important;
-  display: grid; place-items: center; font-weight: 700; font-size: 14px !important;
-  background: var(--accent-soft); color: var(--accent) !important;
-}
-.trust { list-style: none; padding: 0; margin: 0; }
-.trust li {
-  position: relative; padding: 10px 12px 10px 38px; margin: 8px 0; font-size: 14px;
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-}
-.trust li::before {
-  content: "✓"; position: absolute; left: 13px; top: 10px; color: var(--ok); font-weight: 700;
-}
-.trust a { color: var(--accent); }
+.features p { margin: 0 0 12px; }
+.trust { padding-left: 22px; margin: 0; }
+.trust li { margin: 8px 0; }
+.trust a { color: var(--text); }
 #pageTitle:focus { outline: none; }

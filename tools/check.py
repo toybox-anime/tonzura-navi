@@ -84,6 +84,24 @@ for pat in [r"\bfetch\(\s*['\"]https?://", r"XMLHttpRequest", r"sendBeacon", r"g
     if re.search(pat, app):
         err(f"app.js: 外部通信らしきコード（{pat}）。データを外に送らない約束を確認")
 
+# 7. デザインの決まり（DESIGN.md）：グラデーション・影・太い色付きの帯・絵文字を入れない
+design_files = [ROOT / "style.css", ROOT / "guide" / "guide.css", ROOT / "app.js",
+                ROOT / "index.html", ROOT / "about.html", ROOT / "tools" / "build_guides.py"]
+design_rules = [
+    (r"(linear|radial|conic)-gradient\(", "グラデーション（DESIGN.md #1）"),
+    (r"box-shadow\s*:\s*(?!none)", "影（DESIGN.md #2）"),
+    (r"text-shadow\s*:\s*(?!none)", "文字の影（DESIGN.md #9）"),
+    (r"border-(left|top)\s*:\s*([3-9]|\d{2,})px", "太い色付きの帯（DESIGN.md #6）"),
+    ("[\U0001F300-\U0001FAFF✨⭐⚡]", "絵文字（DESIGN.md #3）"),
+]
+for f in design_files:
+    s = f.read_text(encoding="utf-8")
+    for pat, label in design_rules:
+        m = re.search(pat, s)
+        if m:
+            line = s.count("\n", 0, m.start()) + 1
+            err(f"{f.relative_to(ROOT)}:{line}: {label}が入っている → {m.group(0)!r}")
+
 if errors:
     print("NG")
     for e in errors:
