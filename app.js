@@ -578,8 +578,7 @@ function renderSos() {
     ${items.map(([t, b], i) => `
       <label class="card step sos-item">
         <input type="checkbox" class="sos-check">
-        <div class="num">${i + 1}</div>
-        <div class="body"><h3>${t}</h3><p>${b}</p></div>
+        <div class="body"><h3><span class="step-no">${i + 1}.</span>${t}</h3><p>${b}</p></div>
       </label>`).join('')}
     <div class="row" style="margin:8px 0 16px">
       <a class="btn sub-btn" href="tel:%239110">#9110 に電話</a>
@@ -641,9 +640,10 @@ function renderHome() {
       <p class="hero-lead">お金を送って、相手と連絡が取れなくなった方へ</p>
       <p>ここに来てくれてよかったです。<b>悪いのはあなたではなく、だました相手</b>です。いまからでも、できることはあります。順番に一緒に進めましょう。</p>
     </div>
-    <button class="btn block big" id="sosBtn">いま被害にあった・どうしよう</button>
-    <button class="btn sub-btn block" id="checkBtn">これって詐欺？ 5秒チェック</button>
-    <button class="btn sub-btn block" id="newBtn">＋ 記録をつけて、取り戻す手順を進める</button>
+    <p class="cta-lead">いま被害にあった・どうしよう</p>
+    <button class="btn block big" id="sosBtn">いますぐやることを見る</button>
+    <button class="btn sub-btn block" id="checkBtn">詐欺かどうかチェックする</button>
+    <button class="btn sub-btn block" id="newBtn">記録をつけて手順を進める</button>
 
     ${cases.length ? '<h2>あなたの記録</h2>' : ''}
     ${cases.map(c => {
@@ -790,13 +790,15 @@ function paneSteps(c, pane) {
     ${c.type === 'scam' ? '<div class="alert yellow">詐欺の場合は、相手に連絡して刺激するより<b>警察への相談とPayPayへの報告を急いで</b>ください。相手の口座やアカウントにお金が残っているうちが勝負です。</div>' : ''}
     ${steps.map((s, i) => {
       const done = c.done && c.done[s.key];
-      return `<div class="card step ${done ? 'done' : ''}">
+      const isNext = !done && p.next && p.next.key === s.key;
+      return `<div class="card step ${done ? 'done' : ''} ${isNext ? 'next' : ''}">
         <div class="num">${done ? '✓' : i + 1}</div>
         <div class="body">
+          ${isNext ? '<p class="next-label">次にやること</p>' : ''}
           <h3>${esc(s.title)}</h3>
           ${done ? `<p class="sub">${jdate(done)} 完了</p>` : s.body}
           <div class="row no-print" style="margin-top:8px">
-            <button class="btn small ${done ? 'sub-btn' : ''}" data-done="${s.key}">${done ? '未完了に戻す' : '完了にする'}</button>
+            <button class="btn small ${isNext ? '' : 'sub-btn'}" data-done="${s.key}">${done ? '未完了に戻す' : '完了にする'}</button>
             ${s.doc && !done ? `<button class="btn sub-btn small" data-doc="${s.doc}">文面をつくる</button>` : ''}
             ${s.tab && !done ? `<button class="btn sub-btn small" data-tab2="${s.tab}">証拠を登録</button>` : ''}
           </div>
