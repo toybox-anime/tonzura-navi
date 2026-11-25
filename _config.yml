@@ -1,0 +1,8 @@
+# GitHub Pages（Jekyll）の設定。作業用の .md をサイトに出さない。
+# ここに書いたファイルは、GitHub 上では読めるが、公開サイトには出ない。
+exclude:
+  - CLAUDE.md
+  - README.md
+  - ROUTINE.md
+  - DESIGN.md
+  - IDEAS.md
