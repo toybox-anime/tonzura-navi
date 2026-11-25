@@ -169,7 +169,7 @@ function buildSteps(c) {
     cancel: {
       title: 'まだ取り消せないか確認する',
       body: `<p>PayPayの取引履歴でその送金を開いてください。<b>「受け取り待ち」</b>になっていれば、取り消して残高を戻せます。</p>
-        <ul><li>相手が受け取らないまま4日（96時間）たつと、自動で戻ってきます</li>
+        <ul><li>相手が受け取らないまま4日（96時間）たつと、自動で戻ってきます（「ポチ袋」で送り、自動で受け取る設定になっているときは、4日たつと受け取りが完了します）</li>
         <li>「受け取り完了」になっていたら、取り消しはできません。次の手順へ進みましょう</li></ul>`,
     },
     stop: {
@@ -1107,10 +1107,11 @@ function renderContacts() {
     ['PayPay カスタマーサポート', '24時間・年中無休', '0120-990-634', 'tel:0120990634'],
     ['PayPay 詐欺の報告', 'アプリの「送る」→ 相手とのチャット → その取引 →「取引を報告する」', '手順', 'https://paypay.ne.jp/help/c0538/'],
     ['PayPay 紛失・盗難専用窓口', 'スマホをなくした・盗まれたとき。24時間', '0120-990-633', 'tel:0120990633'],
-    ['PayPay 不正利用の補償', '身に覚えのない利用。警察に届け出てから、60日以内に申請', '条件', 'https://paypay.ne.jp/help/c0117/'],
+    ['PayPay 不正利用の補償', '身に覚えのない利用。先に警察へ届け出て、損害が出た日から60日以内に申請', '条件', 'https://paypay.ne.jp/help/c0117/'],
     ['よりそいホットライン', '気持ちがつらいとき。24時間・無料・匿名でOK', '0120-279-338', 'tel:0120279338'],
-    ['裁判所（少額訴訟）', '手続きの説明と定型の訴状用紙', '案内ページ', 'https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_04_02_02/index.html'],
-    ['e内容証明（日本郵便）', 'ネットから内容証明を出せる', 'サイト', 'https://e-naiyo.post.japanpost.jp/'],
+    ['裁判所（少額訴訟）', '手続きの説明', '案内ページ', 'https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_25_02/index.html'],
+    ['裁判所（少額訴訟の書式）', '定型の訴状用紙と記載例', '書式', 'https://www.courts.go.jp/saiban/syosiki/syosiki_syogaku_sosyou/index.html'],
+    ['e内容証明（日本郵便）', 'ネットから内容証明を出せる', 'サイト', 'https://www.post.japanpost.jp/service/send/domestic/web/electronic-certified-mail/'],
   ];
   $app.innerHTML = list.map(([n, d, l, href]) => `
     <div class="card contact"><div><h3>${n}</h3><p class="sub">${d}</p></div>

@@ -8,8 +8,8 @@ from html import escape
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://toybox-anime.github.io/tonzura-navi/"
-UPDATED = "2026年11月11日"
-UPDATED_ISO = "2026-11-11"
+UPDATED = "2026年11月25日"
+UPDATED_ISO = "2026-11-25"
 
 SRC = {
     "pp_help": ("PayPay ヘルプ：不正利用・詐欺対策について", "https://paypay.ne.jp/help/c0176/"),
@@ -17,6 +17,7 @@ SRC = {
     "pp_report_how": ("PayPay ヘルプ：詐欺等の疑いがある送る・受け取るを利用した取引を報告したい", "https://paypay.ne.jp/help/c0538/"),
     "pp_hosho": ("PayPay ヘルプ：不正利用の補償について", "https://paypay.ne.jp/help/c0117/"),
     "pp_limit": ("PayPay ヘルプ：受け取り期限", "https://paypay.ne.jp/help/c0091/"),
+    "pp_cancel": ("PayPay ヘルプ：送ったお金のキャンセル", "https://paypay.ne.jp/help/c0094/"),
     "pp_contact": ("PayPay ヘルプ：お問い合わせ窓口", "https://paypay.ne.jp/help/c0005/"),
     "pp_notice": ("PayPay：詐欺被害防止のお知らせ（2025年12月）", "https://paypay.ne.jp/notice/20251219/s-01/"),
     "pp_notice2": ("PayPay：不正利用・詐欺に関するお知らせ（2026年8月）", "https://paypay.ne.jp/notice/20260828/s-01/"),
@@ -25,7 +26,7 @@ SRC = {
     "fsa": ("金融庁：被害回復等を装った詐欺（二次被害トラブル）にご注意ください（2026年9月）", "https://www.fsa.go.jp/ordinary/chuui/20260901.html"),
     "kokusen_tsuhan": ("国民生活センター：悪質通販サイトにご注意ください（2026年6月17日）", "https://www.kokusen.go.jp/news/data/n-20260617_1.html"),
     "kokusen_jishin": ("国民生活センター：被災地支援をうたう不審なSNS上のDMに注意！－〇〇Pay詐欺の手口も－（2026年8月17日）", "https://www.kokusen.go.jp/news/data/n-20260817_1.html"),
-    "court": ("裁判所：少額訴訟", "https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_04_02_02/index.html"),
+    "court": ("裁判所：少額訴訟", "https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_25_02/index.html"),
     "post": ("日本郵便：内容証明のご利用の条件・料金", "https://www.post.japanpost.jp/service/send/domestic/option/syomei/use.html"),
     "moj": ("法務省：法定利率（2026年4月以降も年3%）", "https://www.moj.go.jp/MINJI/minji07_00366.html"),
 }
@@ -48,7 +49,7 @@ PAGES = [
         "body": """
 <h2>取り消せるのは「受け取り待ち」のとき</h2>
 <p>PayPayの「送る」で送ったお金は、相手が受け取る前なら、送った側で取り消せます。取引履歴やトーク画面でその送金を開き、<b>「受け取り待ち」</b>と表示されているか確認してください（画面の表示はアプリのバージョンによって変わることがあります）。</p>
-<p>相手が受け取らないまま<b>4日（96時間）</b>たつと、送金は自動でキャンセルされ、残高が戻ってきます。</p>
+<p>相手が受け取らないまま<b>4日（96時間）</b>たつと、送金は自動でキャンセルされ、残高が戻ってきます。ただし「ポチ袋」で送り、自動で受け取る設定になっているときは、4日たつと受け取りが完了します。</p>
 
 <h2>「受け取り完了」になっていたら</h2>
 <p>相手が「自動で受け取る」設定にしていると、送った瞬間に受け取りが完了します。この場合、<b>システム上の取り消しはできません</b>。PayPayが強制的に戻すこともできず、自分で送ったお金は<b>PayPayの補償の対象外</b>です。</p>
@@ -63,7 +64,7 @@ PAGES = [
 <p>PayPayには、1日・1か月の<b>利用可能額</b>を設定する機能があります。詳細設定で「取引を一時保留する」を選ぶと、設定額を超えた取引が保留され、<b>キャンセルできる</b>状態になります。だまされて大きな額を送ってしまうのを防げます。</p>
 <p>送る前に、相手に<b>本人確認済みの青いバッジ</b>が付いているかも確認しましょう。</p>
 """,
-        "sources": ["pp_limit", "itmedia", "pp_help", "pp_notice"],
+        "sources": ["pp_limit", "pp_cancel", "itmedia", "pp_help", "pp_notice"],
     },
     {
         "slug": "henkin-sagi",
