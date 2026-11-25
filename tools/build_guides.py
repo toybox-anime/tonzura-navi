@@ -8,8 +8,8 @@ from html import escape
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://toybox-anime.github.io/tonzura-navi/"
-UPDATED = "2026年11月11日"
-UPDATED_ISO = "2026-11-11"
+UPDATED = "2026年11月25日"
+UPDATED_ISO = "2026-11-25"
 
 SRC = {
     "pp_help": ("PayPay ヘルプ：不正利用・詐欺対策について", "https://paypay.ne.jp/help/c0176/"),
