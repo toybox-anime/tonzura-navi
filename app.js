@@ -358,6 +358,10 @@ ${timelineText(c)}
 種類：${TYPES[c.type].label}
 被害額：${yen(totalAmount(c))}（PayPayでの送金）
 
+■ 送金の記録
+${(c.transfers || []).length ? c.transfers.map(t => `・${jdate(t.date)}　${yen(t.amount)}${t.txid ? `（取引番号：${t.txid}）` : ''}`).join('\n') : `・${jdate(c.sentAt)}　${yen(c.amount)}`}
+合計：${yen(totalAmount(c))}
+
 ■ 相手の情報（分かっていること）
 ・名前（名乗っていた名前）：${c.name || '不明'}
 ・PayPay 表示名：${c.paypayName || '不明'}
