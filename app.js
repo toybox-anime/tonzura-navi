@@ -844,7 +844,7 @@ function icsReminder(c, step) {
 
 async function paneEvidence(c, pane) {
   c.transfers = c.transfers || []; c.timeline = c.timeline || [];
-  const imgs = (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => a.date.localeCompare(b.date));
+  const imgs = (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
   pane.innerHTML = `
     <h2>送金の記録</h2>
     <p class="sub">PayPayの取引履歴を開くと、取引ごとに日時・金額・取引番号が表示されます。</p>
@@ -870,7 +870,7 @@ async function paneEvidence(c, pane) {
 
     <h2>出来事の記録（時系列）</h2>
     <p class="sub">「◯日に返すと言われた」「既読無視された」「ブロックされた」など。警察・裁判所向けの文書に自動で入ります。</p>
-    <ul class="tl">${c.timeline.slice().sort((a, b) => a.date.localeCompare(b.date)).map(t => `<li><span class="d">${jdate(t.date).replace(/^\d+年/, '')}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="この出来事の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
+    <ul class="tl">${c.timeline.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(t => `<li><span class="d">${t.date ? jdate(t.date).replace(/^\d+年/, '') : '日付なし'}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="この出来事の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
     <div class="card">
       <input type="date" id="tlDate" value="${today()}">
       <textarea id="tlText" placeholder="例：LINEで「来週返す」と言われた" style="margin-top:8px;min-height:60px"></textarea>
@@ -942,7 +942,7 @@ async function paneDocs(c, pane) {
     : ['dunSoft', 'dunStrong', 'paypay', 'police', 'naiyou', 'sosho', 'shoko', 'family'];
   const sel = keys.includes(route.doc) ? route.doc : keys[0];
   const d = DOCS[sel];
-  const imgs = sel === 'shoko' ? (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => a.date.localeCompare(b.date)) : [];
+  const imgs = sel === 'shoko' ? (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => (a.date || '').localeCompare(b.date || '')) : [];
   const text = fillMe(d.gen(c, imgs));
   const me = state.me || {};
   const isNaiyou = sel === 'naiyou';
