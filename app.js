@@ -440,7 +440,7 @@ ${c.naiyouDone ? '甲3号証　内容証明郵便及び配達証明書' : ''}`,
     note: '裁判所に証拠を出すときに、証拠と一緒に出す一覧表です。「証拠」タブで画像ごとに種類を選んでおくと、内容が自動で入ります。印刷したスクショの右上に「甲第1号証」などと書き込んでください。',
     gen: (c, imgs = []) => {
       const items = imgs.length
-        ? imgs.map(i => ({ kind: i.kind || 'other', date: ymd(new Date(i.date)), memo: i.memo }))
+        ? imgs.map(i => ({ kind: i.kind || 'other', date: i.date ? ymd(new Date(i.date)) : '', memo: i.memo }))
         : [{ kind: 'pay', date: firstSent(c) }, { kind: 'talk', date: '' }];
       if (c.naiyouDone) items.push({ kind: 'naiyou', date: c.done && c.done.naiyou });
       return `証拠説明書
@@ -844,7 +844,7 @@ function icsReminder(c, step) {
 
 async function paneEvidence(c, pane) {
   c.transfers = c.transfers || []; c.timeline = c.timeline || [];
-  const imgs = (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => a.date.localeCompare(b.date));
+  const imgs = (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
   pane.innerHTML = `
     <h2>送金の記録</h2>
     <p class="sub">PayPayの取引履歴を開くと、取引ごとに日時・金額・取引番号が表示されます。</p>
@@ -870,7 +870,7 @@ async function paneEvidence(c, pane) {
 
     <h2>出来事の記録（時系列）</h2>
     <p class="sub">「◯日に返すと言われた」「既読無視された」「ブロックされた」など。警察・裁判所向けの文書に自動で入ります。</p>
-    <ul class="tl">${c.timeline.slice().sort((a, b) => a.date.localeCompare(b.date)).map(t => `<li><span class="d">${jdate(t.date).replace(/^\d+年/, '')}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="この出来事の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
+    <ul class="tl">${c.timeline.slice().sort((a, b) => (a.date || '').localeCompare(b.date || '')).map(t => `<li><span class="d">${t.date ? jdate(t.date).replace(/^\d+年/, '') : '日付なし'}</span><span class="t">${esc(t.text)}</span><button class="del" data-deltl="${t.id}" aria-label="この出来事の記録を削除">✕</button></li>`).join('') || '<li class="sub">まだありません</li>'}</ul>
     <div class="card">
       <input type="date" id="tlDate" value="${today()}">
       <textarea id="tlText" placeholder="例：LINEで「来週返す」と言われた" style="margin-top:8px;min-height:60px"></textarea>
@@ -900,6 +900,7 @@ async function paneEvidence(c, pane) {
   pane.querySelector('#trAdd').onclick = () => {
     const amount = pane.querySelector('#trAmt').value;
     if (!amount) return toast('金額を入力してください');
+    if (!pane.querySelector('#trDate').value) return toast('日付を入力してください');
     c.transfers.push({ id: uid(), date: pane.querySelector('#trDate').value, amount, txid: pane.querySelector('#trTx').value.trim(), memo: pane.querySelector('#trMemo').value.trim() });
     touch(c); render();
   };
@@ -909,6 +910,7 @@ async function paneEvidence(c, pane) {
   pane.querySelector('#tlAdd').onclick = () => {
     const text = pane.querySelector('#tlText').value.trim();
     if (!text) return toast('内容を入力してください');
+    if (!pane.querySelector('#tlDate').value) return toast('日付を入力してください');
     c.timeline.push({ id: uid(), date: pane.querySelector('#tlDate').value, text });
     touch(c); render();
   };
@@ -942,7 +944,7 @@ async function paneDocs(c, pane) {
     : ['dunSoft', 'dunStrong', 'paypay', 'police', 'naiyou', 'sosho', 'shoko', 'family'];
   const sel = keys.includes(route.doc) ? route.doc : keys[0];
   const d = DOCS[sel];
-  const imgs = sel === 'shoko' ? (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => a.date.localeCompare(b.date)) : [];
+  const imgs = sel === 'shoko' ? (await idb.all()).filter(i => i.caseId === c.id).sort((a, b) => (a.date || '').localeCompare(b.date || '')) : [];
   const text = fillMe(d.gen(c, imgs));
   const me = state.me || {};
   const isNaiyou = sel === 'naiyou';
